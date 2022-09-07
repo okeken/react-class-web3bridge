@@ -1,9 +1,13 @@
 
 
-const ErrorComponent = ()=>{
+const ErrorComponent = (props:any)=>{
+    // console.log(props,"propsss!!")
+    const {text, retry} = props
     return (
         <>
-       Error Occurred
+     {text}
+     <button className="border border-red-300 mx-6 p-3" onClick={retry}>try again</button>
+
         </>
     )
 }

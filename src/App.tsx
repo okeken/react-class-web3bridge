@@ -2,9 +2,10 @@ import {Fragment, useEffect, useState} from 'react';
 import './App.css';
 import Loader from './components/Loader';
 import ErrorComponent from './components/ErrorComponent';
-// import Products from './components/Products';
+import ProductsCom from './components/Products';
 // import data from "./data.json"
 import axios from "axios"
+
 
 type Count = {
   rate:number
@@ -23,7 +24,7 @@ const defaultValue = 120
 
 const Products  = ()=>{
   const [info, setInfo] = useState<number>(defaultValue)
-  const [hasError, setHasError] = useState(false)
+  let [hasError, setHasError] = useState(false)
   const [loading, setLoading] = useState(true)
   const [data, setData] = useState<Data[]>(defaultData)
   
@@ -37,9 +38,12 @@ const fetchData = async ()=>{
       const {data:apiData} = await axios.get(`${apiUrl}products`)
       setData(apiData)
       console.log(data)
+      // throw "Error happened";
     }
     catch(e:any){
-      setHasError(e)
+      setHasError(e.message)
+      console.log(e.message,'error')
+      
     }
     finally{
       setLoading(false)
@@ -51,33 +55,16 @@ useEffect(()=>{
 console.log("hello !!!!")
 },[info] )
 
-const _data = ""
-const _loading=""
-const _error = ""
+const _data = <> <ProductsCom data={data} /></>
+
+const _loading=loading ? <Loader /> : ""
+const _error = hasError  ? <ErrorComponent text={hasError} retry={fetchData} />: ""
+console.log(hasError, "hasErrpr")
   return (
     <> 
-    <h1 className='text-5xl '>
-      {info}
-      </h1>
-      <button className='border p-3 inline-block mt-6' onClick={handleChange}>
-        change value
-        </button>
-{data.map((item, index)=> (
-    <Fragment key={index} > 
-  <div className='text-center border border-blue-300 my-6 p-3 rounded-md max-w-sm mx-auto'>
-    <img src={item.image} alt={item.title} className="block mx-auto w-36 h-36 mb-1" />
-  {item.title}
-  
-  </div>
-  
-  </Fragment> 
-  
-  )
-
-
-) 
-}
-
+        {_data}
+        {_error}
+        {_loading}
 </>
   )
 }
