@@ -50,9 +50,15 @@ const fetchData = async ()=>{
     }
 }
 
+
 useEffect(()=>{
+  let mounted = true
+  if(!mounted)return;
   fetchData()
-console.log("hello !!!!")
+  return  ()=> {
+    mounted = false
+
+  };
 },[info] )
 
 const _data = <> <ProductsCom data={data} /></>
