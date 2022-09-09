@@ -3,9 +3,16 @@ import './App.css';
 import Loader from './components/Loader';
 import ErrorComponent from './components/ErrorComponent';
 import ProductsCom from './components/Products';
-// import data from "./data.json"
 import axios from "axios"
+import useCounter from './hooks/useCounter';
+import useData from './hooks/useData';
+// import axios from 'axios';
 
+export const instance = axios.create({
+  baseURL: 'https://some-domain.com/api/',
+  timeout: 1000,
+  headers: {'X-Custom-Header': 'foobar'}
+});
 
 type Count = {
   rate:number
@@ -22,44 +29,14 @@ type Data = {
 const defaultData:Data[] =[]
 const defaultValue = 120
 
-const Products  = ()=>{
-  const [info, setInfo] = useState<number>(defaultValue)
-  let [hasError, setHasError] = useState(false)
-  const [loading, setLoading] = useState(true)
-  const [data, setData] = useState<Data[]>(defaultData)
-  
-
-const handleChange = ()=>{
-  setInfo((prev)=> prev + 20 )
-}
 const apiUrl = "https://fakestoreapi.com/"
-const fetchData = async ()=>{
-    try{
-      const {data:apiData} = await axios.get(`${apiUrl}products`)
-      setData(apiData)
-      console.log(data)
-      // throw "Error happened";
-    }
-    catch(e:any){
-      setHasError(e.message)
-      console.log(e.message,'error')
-      
-    }
-    finally{
-      setLoading(false)
-    }
-}
+const Products  = ()=>{
+  const { data:response, fetchData} = useData(apiUrl, 'products')
+  const { data, loading, hasError } = response
+  
+  const {counter, handleDecrement, handleIncrement, handleReset} = useCounter(12)
+ 
 
-
-useEffect(()=>{
-  let mounted = true
-  if(!mounted)return;
-  fetchData()
-  return  ()=> {
-    mounted = false
-
-  };
-},[info] )
 
 const _data = <> <ProductsCom data={data} /></>
 
@@ -68,6 +45,13 @@ const _error = hasError  ? <ErrorComponent text={hasError} retry={fetchData} />:
 console.log(hasError, "hasErrpr")
   return (
     <> 
+    <div>
+    <h1>{counter}</h1>
+    <button className='p-3 border border-red-400' onClick={handleIncrement}>Increment</button>
+    <button className='p-3 border border-red-400' onClick={handleDecrement}>Decrement</button>
+    <button className='p-3 border border-red-400' onClick={handleReset}>Reset</button>
+
+    </div>
         {_data}
         {_error}
         {_loading}
