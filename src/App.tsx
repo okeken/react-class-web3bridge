@@ -30,11 +30,14 @@ const defaultData:Data[] =[]
 const defaultValue = 120
 
 const apiUrl = "https://fakestoreapi.com/"
+const apiUrl2 = "https://jsonplaceholder.typicode.com/"
 const Products  = ()=>{
   const { data:response, fetchData} = useData(apiUrl, 'products')
+  const info = useData(apiUrl2, 'users')
+  console.log(info,'info')
   const { data, loading, hasError } = response
   
-  const {counter, handleDecrement, handleIncrement, handleReset} = useCounter(12)
+  // const {counter, handleDecrement, handleIncrement, handleReset} = useCounter(12)
  
 
 
@@ -46,10 +49,10 @@ console.log(hasError, "hasErrpr")
   return (
     <> 
     <div>
-    <h1>{counter}</h1>
+    {/* <h1>{counter}</h1>
     <button className='p-3 border border-red-400' onClick={handleIncrement}>Increment</button>
     <button className='p-3 border border-red-400' onClick={handleDecrement}>Decrement</button>
-    <button className='p-3 border border-red-400' onClick={handleReset}>Reset</button>
+    <button className='p-3 border border-red-400' onClick={handleReset}>Reset</button> */}
 
     </div>
         {_data}
