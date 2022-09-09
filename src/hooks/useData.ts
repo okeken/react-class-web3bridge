@@ -10,7 +10,7 @@ const initialData  = {
 }
 
 //baseUrl - https://fakestoreapi.com/
-// endpoint - products
+// endpoint - products/singleProduct
 const useData = (baseUrl='', endPoint='')=>{
     const [data, setData] = useState<InitialData>(initialData)
 
@@ -22,6 +22,7 @@ const useData = (baseUrl='', endPoint='')=>{
                 ...prev,
                 data:response.data,
             }))
+
         }
 
         catch(e:any){

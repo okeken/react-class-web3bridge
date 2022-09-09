@@ -15,7 +15,7 @@ export type Data = {
   }
 
  export type InitialData ={
-    data:Data[]
+    data:any
     loading:boolean
     hasError:boolean
 }

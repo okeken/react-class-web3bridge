@@ -6,6 +6,7 @@ import ProductsCom from './components/Products';
 import axios from "axios"
 import useCounter from './hooks/useCounter';
 import useData from './hooks/useData';
+import useProfile from './hooks/useProfile';
 // import axios from 'axios';
 
 export const instance = axios.create({
@@ -42,7 +43,7 @@ const _data = <> <ProductsCom data={data} /></>
 
 const _loading=loading ? <Loader /> : ""
 const _error = hasError  ? <ErrorComponent text={hasError} retry={fetchData} />: ""
-console.log(hasError, "hasErrpr")
+
   return (
     <> 
     <div>
@@ -64,9 +65,36 @@ console.log(hasError, "hasErrpr")
 const App = ()=> {
   return (
     <Fragment>  
+    <Profile />
     <Products /> 
     </Fragment>
   );
+}
+
+
+const Profile = () => {
+  const {data} = useProfile();
+
+  // // @ts-ignore
+  // const res : any = data.data.results[0];
+
+  // console.log(res);
+  return (
+    <>
+      <div>
+        <h1>Profile</h1>
+        {
+          data.data.results && (
+            <>
+              <img src={data.data.results[0].picture.medium} className="user__profile" />
+              <p className="user__name"></p>
+              <p className="user__street"></p>
+            </>
+          )
+        }
+      </div>
+    </>
+  )
 }
 
 export default App;
